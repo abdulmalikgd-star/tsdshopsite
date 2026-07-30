@@ -1,0 +1,75 @@
+{
+  "entities": {
+    "User": {
+      "title": "User Profile",
+      "description": "Store individual user information and roles.",
+      "type": "object",
+      "properties": {
+        "uid": { "type": "string" },
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "role": { "type": "string", "enum": ["admin", "moderator", "user"] },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["uid", "role", "createdAt"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Store technical product details.",
+      "type": "object",
+      "properties": {
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "discountPrice": { "type": "number" },
+        "category": { "type": "string" },
+        "images": { "type": "array" },
+        "stock": { "type": "number" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["name", "price", "category", "images", "stock", "createdAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Store purchase orders.",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string" },
+        "items": { "type": "array" },
+        "total": { "type": "number" },
+        "status": { "type": "string", "enum": ["pending", "processing", "shipped", "delivered", "cancelled"] },
+        "shippingDetails": { "type": "object" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["userId", "items", "total", "status", "shippingDetails", "createdAt"]
+    },
+    "Favorite": {
+      "title": "Favorite/Wishlist Item",
+      "description": "Store items a user has favorited.",
+      "type": "object",
+      "properties": {
+        "productId": { "type": "string" },
+        "createdAt": { "type": "number" }
+      },
+      "required": ["productId", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profile documents."
+    },
+    "/users/{userId}/favorites/{productId}": {
+      "schema": "Favorite",
+      "description": "User's favorite products."
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Product catalog documents."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Customer order records."
+    }
+  }
+}
